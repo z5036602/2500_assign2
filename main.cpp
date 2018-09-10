@@ -161,14 +161,14 @@ void drawGoals()
 
 //--------------------------------------
 // set up for shape (dimension, rotation, rgb, starting pts for drawing)
-/*void drawMyShape() {
+void drawMyShape() {
 	
 	recPrism a(10, 10, 10, 45, 255, 255, 0, 0, 0, 0);
 	//triPrism a(60, 60, 60, 60, 30, 0, 255, 0, 0, 0, 0);
 	//trapPrism a(30, 5, 10, 10, 40, 0, 0, 0, 255, 0, 0, 0);
 	//cylinder a(10, 20, 0, 0, 255, 0, 0, 0, 0);
 	a.draw();
-}*/
+}
 //--------------------------------------
 
 void display() {
@@ -203,9 +203,9 @@ void display() {
 		vehicle->draw();
 
 	}
-
+	glPopMatrix();
 	// draw obstacles
-	ObstacleManager::get()->drawAll();
+	//ObstacleManager::get()->drawAll();
 
 	// draw goals
 	drawGoals();
@@ -317,8 +317,8 @@ void idle() {
 				}
 				otherVehicles.clear();
 
-				// uncomment this line to connect to the robotics server.
-				//RemoteDataManager::Connect("www.robotics.unsw.edu.au","18081");
+				// uncomment this line to connect to the robotics server.*****************************************************
+				RemoteDataManager::Connect("www.robotics.unsw.edu.au","18081");
 
 				// on connect, let's tell the server what we look like
 				if (RemoteDataManager::IsConnected()) {
@@ -327,9 +327,93 @@ void idle() {
 					VehicleModel vm;
 					vm.remoteID = 0;
 
-					//
-					// student code goes here
-					//
+					ShapeInit part;
+					part.type = RECTANGULAR_PRISM;
+					part.params.rect.xlen = 3.74;
+					part.params.rect.ylen = 0.43;
+					part.params.rect.zlen = 1.41;
+					part.rgb[0] = 0.6;
+					part.rgb[1] = 0.0;
+					part.rgb[2] = 0.0;
+					part.rotation = 0.0;
+					part.xyz[0] = 0.0;
+					part.xyz[1] = 0.21;
+					part.xyz[2] = 0.0;
+					vm.shapes.push_back(part);
+
+					part.type = TRAPEZOIDAL_PRISM;
+					part.params.trap.alen = 1.62;
+					part.params.trap.blen = 0.51;
+					part.params.trap.height = 0.56;
+					part.params.trap.aoff = 0.01;
+					part.params.trap.depth = 1.41;
+					part.rgb[0] = 0.7;
+					part.rgb[1] = 0.0;
+					part.rgb[2] = 0.0;
+					part.rotation = 0.0;
+					part.xyz[0] = 0.13;
+					part.xyz[1] = 0.64;
+					part.xyz[2] = 0.0;
+					vm.shapes.push_back(part);
+
+					part.type = CYLINDER;
+					part.params.cyl.radius = 0.21;
+					part.params.cyl.depth = 0.19;
+					part.params.cyl.isRolling = 1;
+					part.params.cyl.isSteering = 1;
+					part.rgb[0] = 0.2;
+					part.rgb[1] = 0.2;
+					part.rgb[2] = 0.2;
+					part.rotation = 0.0;
+					part.xyz[0] = 1.28;
+					part.xyz[1] = 0.0;
+					part.xyz[2] = 0.61;
+					vm.shapes.push_back(part);
+
+					part.type = CYLINDER;
+					part.params.cyl.radius = 0.21;
+					part.params.cyl.depth = 0.19;
+					part.params.cyl.isRolling = 1;
+					part.params.cyl.isSteering = 1;
+					part.rgb[0] = 0.2;
+					part.rgb[1] = 0.2;
+					part.rgb[2] = 0.2;
+					part.rotation = 0.0;
+					part.xyz[0] = 1.28;
+					part.xyz[1] = 0.0;
+					part.xyz[2] = -0.61;
+					vm.shapes.push_back(part);
+
+					part.type = CYLINDER;
+					part.params.cyl.radius = 0.21;
+					part.params.cyl.depth = 0.19;
+					part.params.cyl.isRolling = 1;
+					part.params.cyl.isSteering = 0;
+					part.rgb[0] = 0.2;
+					part.rgb[1] = 0.2;
+					part.rgb[2] = 0.2;
+					part.rotation = 0.0;
+					part.xyz[0] = -1.04;
+					part.xyz[1] = 0.0;
+					part.xyz[2] = 0.61;
+					vm.shapes.push_back(part);
+
+					part.type = CYLINDER;
+					part.params.cyl.radius = 0.21;
+					part.params.cyl.depth = 0.19;
+					part.params.cyl.isRolling = 1;
+					part.params.cyl.isSteering = 0;
+					part.rgb[0] = 0.2;
+					part.rgb[1] = 0.2;
+					part.rgb[2] = 0.2;
+					part.rotation = 0.0;
+					part.xyz[0] = -1.04;
+					part.xyz[1] = 0.0;
+					part.xyz[2] = -0.61;
+					vm.shapes.push_back(part); 
+
+
+
 
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
 				}
@@ -364,12 +448,11 @@ void idle() {
 							for(unsigned int i = 0; i < models.size(); i++) {
 								VehicleModel vm = models[i];
 								
-								// uncomment the line below to create remote vehicles
-								//otherVehicles[vm.remoteID] = new MyVehicle();
+								// uncomment the line below to create remote vehicles*****************************************************
+								//otherVehicles[vm.remoteID] = new myVehicle();
+								//vm
 
-								//
-								// more student code goes here
-								//
+								
 							}
 							break;
 						}

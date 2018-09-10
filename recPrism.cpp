@@ -16,14 +16,13 @@ recPrism::recPrism(double l, double h, double d, double rotation_, float red_, f
 	depth = d;
 	setColor(red_, green_, blue_);
 	setRotation(rotation_);
-	setColorInGL();
 	setPosition(x, y, z);
-	positionInGL();
 }
 
 void recPrism::draw() {
 	
-	//draw the front face
+	positionInGL();
+	setColorInGL();
 	glBegin(GL_QUADS);
 
 	glVertex3f(0, 0, 0);

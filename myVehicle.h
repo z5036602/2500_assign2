@@ -3,14 +3,16 @@
 #ifndef myVehicle_hpp
 #define myVehicle_hpp
 #include "Vehicle.hpp"
+#include "Messages.hpp"
 
 class myVehicle :public Vehicle {
-	// member data
-	// member methods
+	VehicleModel Model;
+	double  distance = 0;
 public:
 	myVehicle();
 	~myVehicle() {}
 	void virtual draw();
+	void virtual update(double dt);
 };
 
 #endif

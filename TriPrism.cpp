@@ -17,13 +17,13 @@ triPrism::triPrism(double l1_, double l2_, double theta_, double d, double rotat
 	depth = d;
 	setColor(red_, green_, blue_);
 	setRotation(rotation_);
-	setColorInGL();
 	setPosition(x, y, z);
-	positionInGL();
 }
 
 void triPrism::draw() {
 	// draw front face
+	setColorInGL();
+	positionInGL();
 	glBegin(GL_TRIANGLES);
 
 	glVertex3f(l1, 0, 0); 

@@ -16,65 +16,75 @@
 #include "trapPrism.h"
 
 myVehicle::myVehicle() {
-	Shape *shapePtr = NULL;
-	shapePtr = &recPrism(10, 10, 10, -90, 255, 0, 0, 0, 0, 0);
-	addShape(shapePtr);
+	
+	Shape *shapeptr;
+
+	//shapes.clear();
+	shapeptr = new recPrism(10, 4, 8, 0, 0, 0, 255, -0, 2, 0);
+	addShape(shapeptr);
+	shapeptr = new trapPrism(10, 1, 1, 2, 8, 0, 0, 255, 0, 0, 6, 0);
+	addShape(shapeptr);
+	shapeptr = new triPrism(8, 4, 45, 8, 0, 125, 0, 200, 1, 8, 0);
+	addShape(shapeptr);
+	shapeptr = new cylinder(2, 1, 0, 0, 2, -1,true,false);
+	addShape(shapeptr);
+	shapeptr = new cylinder(2, 1, 0, 0, 2, 8.5,true,false);
+	addShape(shapeptr);
+	shapeptr = new cylinder(2, 1, 0, 10, 2, -1,true,true);
+	addShape(shapeptr);
+	shapeptr = new cylinder(2, 1, 0, 10, 2, 8.5,true,true);
+	addShape(shapeptr);
+}
+
+void myVehicle::update( double dt) {
+	speed = clamp(MAX_BACKWARD_SPEED_MPS, speed, MAX_FORWARD_SPEED_MPS);
+	steering = clamp(MAX_LEFT_STEERING_DEGS, steering, MAX_RIGHT_STEERING_DEGS);
+
+	// update position by integrating the speed
+	x += speed * dt * cos(rotation * 3.1415926535 / 180.0);
+	z += speed * dt * sin(rotation * 3.1415926535 / 180.0);
+
+	// update heading
+	rotation += dt * steering * speed;
+
+	while (rotation > 360) rotation -= 360;
+	while (rotation < 0) rotation += 360;
+
+
+	if (fabs(speed) < .1)
+		speed = 0;
+	if (fabs(steering) < .1)
+		steering = 0;
+
+	distance += speed * dt;
+
+
 }
 
 void myVehicle::draw() {
-	// drawing 1 part a a time
-	// body recprism
-	// move to the vehicles's local frame of reference
-	glPushMatrix();
-	positionInGL();
+	cylinder *CylObj;
+	for (std::vector<Shape*>::iterator it = shapes.begin(); it != shapes.end(); it++)
+	{
+		//move to the vehicle's local frame of reference
+		glPushMatrix();
+		positionInGL();
+		//draw in local frame
+		if ((CylObj = dynamic_cast<cylinder*>(*it)) != NULL)
+		{
+			if (CylObj->getisSteering()) {
+				CylObj->setsteering(steering);
+			}
+			if (CylObj->getisRolling()) {
+				CylObj->setrolling_distance(distance);
+			}
+		}
+		(*it)->draw();
+		//move back to global frame of reference
+		glPopMatrix();
 
-	/* all local drawing code
-	for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
-		prism
-	}*/
-	recPrism a(8, 4, 10, 0, 0, 0, 255, -4, 2, 0);
-	a.draw();
+	}
 
-	// move back to the global frame of reference
-	glPopMatrix();
 
-	// middle body trapPrism
-	glPushMatrix();
-	positionInGL();
-	trapPrism mb(8, 1, 1, 2, 10, 0, 0, 255, 0, -4, 6, 0);
-	mb.draw();
-	glPopMatrix();
 
-	// top of the car triPrism
-	glPushMatrix();
-	positionInGL();
-	triPrism top(10,4,45,6,-90,125,0,200,-3,8,10);
-	top.draw();
-	glPopMatrix();
-	 
-	// wheels 4 cylinders
-	glPushMatrix();
-	positionInGL();
-	cylinder wrr(3, 0.25, 90, 255, 0, 0, -4, 3, 0);
-	wrr.draw();
-	glPopMatrix();
-	
-	glPushMatrix();
-	positionInGL();
-	cylinder wrl(3, 0.25, -90, 255, 0, 0, 4, 3, 0);
-	wrl.draw();
-	glPopMatrix();
-	
-	glPushMatrix();
-	positionInGL();
-	cylinder wfr(2, 0.25, 90, 255, 0, 0, -4, 2, 10);
-	wfr.draw();
-	glPopMatrix();
-	
-	glPushMatrix();
-	positionInGL();
-	cylinder wfl(2, 0.25, -90, 255, 0, 0, 4, 2, 10);
-	wfl.draw();
-	glPopMatrix();
-	
 }
+

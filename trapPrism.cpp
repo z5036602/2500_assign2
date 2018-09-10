@@ -18,13 +18,13 @@ trapPrism::trapPrism(double base_, double os1_, double os2_, double height_, dou
 	depth = d;
 	setColor(red_, green_, blue_);
 	setRotation(rotation_);
-	setColorInGL();
 	setPosition(x, y, z);
-	positionInGL();
 }
 
 void trapPrism::draw() {
 	// draw front face
+	setColorInGL();
+	positionInGL();
 	glBegin(GL_QUADS);
 
 	glVertex3f(0, 0, 0);
