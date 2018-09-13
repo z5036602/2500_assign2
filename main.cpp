@@ -327,32 +327,47 @@ void idle() {
 					VehicleModel vm;
 					vm.remoteID = 0;
 
-					ShapeInit part;
+					/*ShapeInit part;
+					vm.remoteID = 0;
 					part.type = RECTANGULAR_PRISM;
-					part.params.rect.xlen = 3.74;
-					part.params.rect.ylen = 0.43;
-					part.params.rect.zlen = 1.41;
-					part.rgb[0] = 0.6;
-					part.rgb[1] = 0.0;
+					part.params.rect.xlen = 10;
+					part.params.rect.ylen = 4;
+					part.params.rect.zlen = 8;
+					part.rgb[0] = 0.0;
+					part.rgb[1] = 255;
 					part.rgb[2] = 0.0;
 					part.rotation = 0.0;
 					part.xyz[0] = 0.0;
-					part.xyz[1] = 0.21;
-					part.xyz[2] = 0.0;
+					part.xyz[1] = 2;
+					part.xyz[2] = 0;
 					vm.shapes.push_back(part);
 
 					part.type = TRAPEZOIDAL_PRISM;
-					part.params.trap.alen = 1.62;
-					part.params.trap.blen = 0.51;
-					part.params.trap.height = 0.56;
-					part.params.trap.aoff = 0.01;
-					part.params.trap.depth = 1.41;
+					part.params.trap.alen = 10;
+					part.params.trap.blen = 8;
+					part.params.trap.height = 2;
+					part.params.trap.aoff = 1;
+					part.params.trap.depth = 8;
 					part.rgb[0] = 0.7;
 					part.rgb[1] = 0.0;
 					part.rgb[2] = 0.0;
 					part.rotation = 0.0;
-					part.xyz[0] = 0.13;
-					part.xyz[1] = 0.64;
+					part.xyz[0] = 0;
+					part.xyz[1] = 6;
+					part.xyz[2] = 0;
+					vm.shapes.push_back(part);
+
+					part.type = TRIANGULAR_PRISM;
+					part.params.tri.alen = 8;
+					part.params.tri.blen = 4.0;
+					part.params.tri.angle = 45.0;
+					part.params.tri.depth = 8.0;
+					part.rgb[0] = 0.0;
+					part.rgb[1] = 0.0;
+					part.rgb[2] = 0.0;
+					part.rotation = 0.0;
+					part.xyz[0] = 1.0;
+					part.xyz[1] = 8.0;
 					part.xyz[2] = 0.0;
 					vm.shapes.push_back(part);
 
@@ -371,8 +386,8 @@ void idle() {
 					vm.shapes.push_back(part);
 
 					part.type = CYLINDER;
-					part.params.cyl.radius = 0.21;
-					part.params.cyl.depth = 0.19;
+					part.params.cyl.radius = 2;
+					part.params.cyl.depth = 1;
 					part.params.cyl.isRolling = 1;
 					part.params.cyl.isSteering = 1;
 					part.rgb[0] = 0.2;
@@ -410,7 +425,7 @@ void idle() {
 					part.xyz[0] = -1.04;
 					part.xyz[1] = 0.0;
 					part.xyz[2] = -0.61;
-					vm.shapes.push_back(part); 
+					vm.shapes.push_back(part);*/
 
 
 
@@ -449,7 +464,7 @@ void idle() {
 								VehicleModel vm = models[i];
 								
 								// uncomment the line below to create remote vehicles*****************************************************
-								//otherVehicles[vm.remoteID] = new myVehicle();
+								otherVehicles[vm.remoteID] = new myVehicle(vm); // construct a vehicle by input from the server???
 								//vm
 
 								

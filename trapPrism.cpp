@@ -10,15 +10,15 @@
 
 using namespace std;
 
-trapPrism::trapPrism(double base_, double os1_, double os2_, double height_, double d, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
+trapPrism::trapPrism(double base_, double top_, double os1_, double height_, double d, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
 	base = base_;
+	top = top_;
 	os1 = os1_;
-	os2 = os2_;
 	height = height_;
 	depth = d;
 	setColor(red_, green_, blue_);
 	setRotation(rotation_);
-	setPosition(x, y, z);
+	setPosition(x-0.5*base, y, z-0.5*depth);
 }
 
 void trapPrism::draw() {
@@ -26,7 +26,7 @@ void trapPrism::draw() {
 	setColorInGL();
 	positionInGL();
 	glBegin(GL_QUADS);
-
+	double os2 = base - top - os1;
 	glVertex3f(0, 0, 0);
 	glVertex3f(os1, height, 0);
 	glVertex3f(base - os2, height, 0);

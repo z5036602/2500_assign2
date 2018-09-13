@@ -10,7 +10,10 @@ class myVehicle :public Vehicle {
 	double  distance = 0;
 public:
 	myVehicle();
+	myVehicle(VehicleModel Model_);
 	~myVehicle() {}
+	//VehicleModel  getVehicle();
+	
 	void virtual draw();
 	void virtual update(double dt);
 };

@@ -11,8 +11,9 @@ class cylinder : public Shape {
 	bool isSteering = true;// needs to steer with vehicle?
 	double steering_in_cylinder_class;
 	double distance_in_cylinder_class;
+
 public:
-	cylinder(double radius, double depth, double rotation_, double x, double y, double z,bool isRolling_, bool isSteering_);
+	cylinder(double radius, double depth, double rotation_, double x, double y, double z,bool isRolling_, bool isSteering_, double R_, double G_, double B_);
 	cylinder() {}
 	void virtual draw();
 	void setsteering(double steering_);

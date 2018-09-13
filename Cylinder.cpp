@@ -12,18 +12,20 @@ using namespace std;
 
 #define PI 3.14159265358979323846
 
-cylinder::cylinder (double radius_, double d, double rotation_, double x, double y, double z,bool isRolling_,bool isSteering_) {
+cylinder::cylinder (double radius_, double d, double rotation_, double x, double y, double z,bool isRolling_,bool isSteering_,double R_,double G_,double B_) {
 	radius = radius_;
 	depth = d;
 	isRolling = isRolling_;
 	isSteering = isSteering_;
-	setRotation(rotation_*2);
-	setPosition(x, y, z);
+	setRotation(rotation_);
+	setPosition(x, y+radius_, z-0.5*depth);
 
+	setColor(R_,G_,B_);
 }
 
 void cylinder::draw() {
 	// draw the front face 
+	
 	setColorInGL();
 	positionInGL();
 	if (isSteering == true) {
@@ -45,8 +47,8 @@ void cylinder::draw() {
 		}
 		double coor_X = cos(theta)*radius;
 		double coor_Y = sin(theta)*radius;
-		glVertex3f(coor_X, coor_Y, depth / 2.0);
-		glVertex3f(coor_X, coor_Y, -depth / 2.0);
+		glVertex3f(coor_X, coor_Y, depth );
+		glVertex3f(coor_X, coor_Y, 0);
 
 	}
 	glEnd();

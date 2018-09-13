@@ -16,7 +16,7 @@ recPrism::recPrism(double l, double h, double d, double rotation_, float red_, f
 	depth = d;
 	setColor(red_, green_, blue_);
 	setRotation(rotation_);
-	setPosition(x, y, z);
+	setPosition(x-0.5*l, y, z-0.5*d);
 }
 
 void recPrism::draw() {
@@ -25,6 +25,7 @@ void recPrism::draw() {
 	setColorInGL();
 	glBegin(GL_QUADS);
 
+	
 	glVertex3f(0, 0, 0);
 	glVertex3f(0, height, 0);
 	glVertex3f(length, height, 0);
