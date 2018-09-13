@@ -28,44 +28,44 @@ void triPrism::draw() {
 	//glRotated(50, 0, 1, 0);
 	glBegin(GL_TRIANGLES);
 
-	glVertex3f(-l1, 0, 0); 
-	glVertex3f(0, 0, 0);
-	glVertex3f(-l2 *cos(theta/180*3.1415), l2 * sin(theta /180*3.1415), 0);
+	glVertex3f(-l1/2, 0, -depth/2); 
+	glVertex3f(l1 / 2, 0, -depth / 2);
+	glVertex3f(l2 *cos(theta/180*3.1415) - l1 / 2, l2 * sin(theta /180*3.1415), -depth / 2);
 	
 	glEnd();
 	// draw back face
 	glBegin(GL_TRIANGLES);
 
-	glVertex3f(-l1, 0, depth);
-	glVertex3f(0, 0, depth);
-	glVertex3f(-l2 * cosf(theta / 180 * 3.1415), l2 * sinf(theta / 180 * 3.1415), depth);
+	glVertex3f(-l1 / 2, 0, depth / 2);
+	glVertex3f(l1 / 2, 0, depth / 2);
+	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), depth / 2);
 
 	glEnd();
 	// draw right face
 	glBegin(GL_QUADS);
 
-	glVertex3f(0,0,0);
-	glVertex3f(0, 0, depth);
-	glVertex3f(-l2 * cosf(theta / 180 * 3.1415), l2 * sinf(theta / 180 * 3.1415), depth);
-	glVertex3f(-l2 * cosf(theta / 180 * 3.1415), l2 * sinf(theta / 180 * 3.1415), 0);
+	glVertex3f(-l1 / 2, 0, -depth / 2);
+	glVertex3f(-l1 / 2, 0, depth / 2);
+	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), depth / 2);
+	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), -depth / 2);
 
 	glEnd();
 	// draw left face
 	glBegin(GL_QUADS);
 
-	glVertex3f(-l1, 0, 0);
-	glVertex3f(-l1, 0, depth);
-	glVertex3f(-l2 * cosf(theta / 180 * 3.1415), l2 * sinf(theta / 180 * 3.1415), depth);
-	glVertex3f(-l2 * cosf(theta / 180 * 3.1415), l2 * sinf(theta / 180 * 3.1415), 0);
+	glVertex3f(l1 / 2, 0, -depth / 2);
+	glVertex3f(l1 / 2, 0, depth / 2);
+	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), -depth / 2);
+	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), depth / 2);
 
 	glEnd();
 	// draw bottom
 	glBegin(GL_QUADS);
 
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, 0, depth);
-	glVertex3f(-l1, 0, depth);
-	glVertex3f(-l1, 0, 0);
+	glVertex3f(-l1 / 2, 0, -depth / 2);
+	glVertex3f(-l1 / 2, 0, +depth / 2);
+	glVertex3f(+l1 / 2, 0, +depth / 2);
+	glVertex3f(+l1 / 2, 0, -depth / 2);
 
 	glEnd();
 }

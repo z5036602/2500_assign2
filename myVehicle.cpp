@@ -18,20 +18,20 @@
 
 myVehicle::myVehicle(){
 	Shape *shapeptr = NULL;
-	//shapeptr = new recPrism(10, 4, 8, 0, 0, 0, 255, -0, 5, 0);
-	//addShape(shapeptr);
-	//shapeptr = new trapPrism(10, 8, 1, 1, 8, 0, 0, 255, 0, 0, 0, 0);
-	//addShape(shapeptr);
-	shapeptr = new triPrism(50, 20, 45, 5, 0, 125, 0, 200, 0, 0, 0);
+	shapeptr = new recPrism(8, 4, 10, 0, 0, 0, 255, -4, 2, 0);
 	addShape(shapeptr);
-	//shapeptr = new cylinder(1,1, 90, 0, 0, 0, true, false,0,0,0);
-	//addShape(shapeptr);
-	//shapeptr = new cylinder(2, 1, 0, 0, 2, 8.5, true, false,0,0,0);
-	//addShape(shapeptr);
-	//shapeptr = new cylinder(2, 1, 0, 0, 0, 0, true, true,0,1,0);
-	//addShape(shapeptr);
-	//shapeptr = new cylinder(2, 1, 0, 10, 2, 8.5, true, true,0,1,0);
-	//addShape(shapeptr);
+	shapeptr = new trapPrism(8, 1, 1, 2, 10, 0, 0, 255, 0, -4, 6, 0);
+	addShape(shapeptr);
+	shapeptr = new triPrism(10, 4, 45, 6, 0, 125, 0, 200, -3, 8, 10);
+	addShape(shapeptr);
+	shapeptr = new cylinder(1,1, 90, 0, 0, 0, true, false,0,0,0);
+	addShape(shapeptr);
+	shapeptr = new cylinder(2, 1, 0, 0, 2, 8.5, true, false,0,0,0);
+	addShape(shapeptr);
+	shapeptr = new cylinder(2, 1, 0, 0, 0, 0, true, true,0,1,0);
+	addShape(shapeptr);
+	shapeptr = new cylinder(2, 1, 0, 10, 2, 8.5, true, true,0,1,0);
+	addShape(shapeptr);
 
 }
 
@@ -156,7 +156,7 @@ myVehicle::myVehicle(VehicleModel Model_) {  //just for testing assign my own va
 			break;
 
 		case TRAPEZOIDAL_PRISM:
-			shapeptr = new trapPrism(iter->params.trap.alen, iter->params.trap.blen, iter->params.trap.aoff, iter->params.trap.height, iter->rotation, iter->rotation, iter->rgb[0], iter->rgb[1], iter->rgb[2], iter->xyz[0], iter->xyz[1], iter->xyz[2]);
+			shapeptr = new trapPrism(iter->params.trap.alen, iter->params.trap.blen, iter->params.trap.aoff, iter->params.trap.height, iter->params.trap.depth,iter->rotation, iter->rgb[0], iter->rgb[1], iter->rgb[2], iter->xyz[0], iter->xyz[1], iter->xyz[2]);
 			break;
 		}
 		addShape(shapeptr);

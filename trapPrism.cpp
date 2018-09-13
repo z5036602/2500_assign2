@@ -18,7 +18,7 @@ trapPrism::trapPrism(double base_, double top_, double os1_, double height_, dou
 	depth = d;
 	setColor(red_, green_, blue_);
 	setRotation(rotation_);
-	setPosition(x-0.5*base, y, z-0.5*depth);
+	setPosition(x, y, z);
 }
 
 void trapPrism::draw() {
@@ -27,60 +27,60 @@ void trapPrism::draw() {
 	positionInGL();
 	glBegin(GL_QUADS);
 	double os2 = base - top - os1;
-	glVertex3f(0, 0, 0);
-	glVertex3f(os1, height, 0);
-	glVertex3f(base - os2, height, 0);
-	glVertex3f(base, 0, 0);
+	glVertex3f(-0.5*base, 0, -depth*0.5); //a
+	glVertex3f(-0.5*base+os1, height, -depth * 0.5);//d
+	glVertex3f(0.5*base - os2, height, -depth * 0.5);//c
+	glVertex3f(0.5*base, 0, -depth * 0.5);//b
 
 	glEnd();
 
 	// draw the back face
 	glBegin(GL_QUADS);
 
-	glVertex3f(0, 0, depth);
-	glVertex3f(os1, height, depth);
-	glVertex3f(base - os2, height, depth);
-	glVertex3f(base, 0, depth);
+	glVertex3f(-0.5*base, 0, depth * 0.5); //e
+	glVertex3f(-0.5*base + os1, height, +depth * 0.5);//h
+	glVertex3f(0.5*base - os2, height, +depth * 0.5);//g
+	glVertex3f(0.5*base, 0, +depth * 0.5);//f
 
 	glEnd();
 	
 	// draw the right face
 	glBegin(GL_QUADS);
 
-	glVertex3f(0, 0, 0);
-	glVertex3f(0,0,depth);
-	glVertex3f(os1, height, depth);
-	glVertex3f(os1, height, 0);
+	glVertex3f(0.5*base, 0, -depth * 0.5);
+	glVertex3f(0.5*base - os2, height, -depth * 0.5);
+	glVertex3f(0.5*base - os2, height, +depth * 0.5);
+	glVertex3f(0.5*base, 0, +depth * 0.5);
 
 	glEnd();
 
 	// draw the left face
 	glBegin(GL_QUADS);
 
-	glVertex3f(base, 0, 0);
-	glVertex3f(base - os2, height, 0);
-	glVertex3f(base - os2, height, depth);
-	glVertex3f(base, 0, depth);
+	glVertex3f(-0.5*base, 0, -depth * 0.5);
+	glVertex3f(-0.5*base + os1, height, -depth * 0.5);
+	glVertex3f(-0.5*base + os1, height, +depth * 0.5);
+	glVertex3f(-0.5*base, 0, depth * 0.5);
 
 	glEnd();
 
 	// draw top
 	glBegin(GL_QUADS);
 
-	glVertex3f(os1, height, 0);
-	glVertex3f(os1, height, depth);
-	glVertex3f(base - os2, height, depth);
-	glVertex3f(base - os2, height, 0);
+	glVertex3f(-0.5*base + os1, height, -depth * 0.5);
+	glVertex3f(0.5*base - os2, height, -depth * 0.5);
+	glVertex3f(0.5*base - os2, height, +depth * 0.5);
+	glVertex3f(-0.5*base + os1, height, +depth * 0.5);
 
 	glEnd();
 
 	//draw bottom
 	glBegin(GL_QUADS);
 
-	glVertex3f(0,0,0);
-	glVertex3f(0, 0, depth);
-	glVertex3f(base, 0, depth);
-	glVertex3f(base, 0, 0);
+	glVertex3f(-0.5*base, 0, -depth * 0.5);
+	glVertex3f(0.5*base, 0, -depth * 0.5);
+	glVertex3f(0.5*base, 0, +depth * 0.5);
+	glVertex3f(-0.5*base, 0, depth * 0.5);
 
 	glEnd();
 }

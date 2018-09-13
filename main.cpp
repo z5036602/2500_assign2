@@ -327,7 +327,7 @@ void idle() {
 					VehicleModel vm;
 					vm.remoteID = 0;
 
-					/*ShapeInit part;
+					ShapeInit part;
 					vm.remoteID = 0;
 					part.type = RECTANGULAR_PRISM;
 					part.params.rect.xlen = 10;
@@ -425,7 +425,7 @@ void idle() {
 					part.xyz[0] = -1.04;
 					part.xyz[1] = 0.0;
 					part.xyz[2] = -0.61;
-					vm.shapes.push_back(part);*/
+					vm.shapes.push_back(part);
 
 
 
