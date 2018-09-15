@@ -10,76 +10,78 @@
 
 using namespace std;
 
-recPrism::recPrism(double l, double h, double d, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
-	length = l;
-	height = h;
-	depth = d;
+recPrism::recPrism(double xl, double yl, double zl, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
+	xlen = xl;
+	ylen = yl;
+	zlen = zl;
 	setColor(red_, green_, blue_);
 	setRotation(rotation_);
-	setPosition(x-0.5*l, y, z-0.5*d);
+	setPosition(x, y, z);
 }
 
 void recPrism::draw() {
-	
-	positionInGL();
+	// setting up position and color in GL
 	setColorInGL();
+	positionInGL();
+
+	// Front face
 	glBegin(GL_QUADS);
 
-	
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, height, 0);
-	glVertex3f(length, height, 0);
-	glVertex3f(length, 0, 0);
-	
-	glEnd();
-	// draw the back face
-	glBegin(GL_QUADS);
-
-	glVertex3f(0, 0, depth);
-	glVertex3f(0, height, depth);
-	glVertex3f(length, height, depth);
-	glVertex3f(length, 0, depth);
+	glVertex3f(-xlen/2 , 0, -zlen/2);
+	glVertex3f(xlen/2, 0, -zlen / 2);
+	glVertex3f(xlen/2, ylen, -zlen / 2);
+	glVertex3f(-xlen/2, ylen, -zlen / 2);
 
 	glEnd();
 
-	// draw right face
+	// Back face
 	glBegin(GL_QUADS);
 
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, 0, depth);
-	glVertex3f(0, height, depth);
-	glVertex3f(0, height, 0);
+	glVertex3f(-xlen / 2, 0, zlen / 2);
+	glVertex3f(xlen / 2, 0, zlen / 2);
+	glVertex3f(xlen / 2, ylen, zlen / 2);
+	glVertex3f(-xlen / 2, ylen, zlen / 2);
 
 	glEnd();
-	
-	// draw left side face
+
+	// Right face
 	glBegin(GL_QUADS);
 
-	glVertex3f(length, 0, 0);
-	glVertex3f(length, 0, depth);
-	glVertex3f(length, height, depth);
-	glVertex3f(length, height, 0);
+	glVertex3f(-xlen / 2, 0, -zlen / 2);
+	glVertex3f(-xlen / 2, 0, zlen / 2);
+	glVertex3f(-xlen / 2, ylen, zlen / 2);
+	glVertex3f(-xlen / 2, ylen, -zlen / 2);
 
 	glEnd();
-	// draw top
+
+	// Left face
 	glBegin(GL_QUADS);
 
-	glVertex3f(0, height, 0);
-	glVertex3f(0, height, depth);
-	glVertex3f(length, height, depth);
-	glVertex3f(length, height,0);
-	
+	glVertex3f(xlen / 2, 0, -zlen / 2);
+	glVertex3f(xlen / 2, 0, zlen / 2);
+	glVertex3f(xlen / 2, ylen, zlen / 2);
+	glVertex3f(xlen / 2, ylen, -zlen / 2);
+
 	glEnd();
 
-	// draw bottom
+	// Top
 	glBegin(GL_QUADS);
 
-	glVertex3f(0, 0, 0);
-	glVertex3f(0, 0, depth);
-	glVertex3f(length, 0, depth);
-	glVertex3f(length, 0, 0);
+	glVertex3f(xlen / 2, ylen, -zlen / 2);
+	glVertex3f(xlen / 2, ylen, zlen / 2);
+	glVertex3f(-xlen / 2, ylen, zlen / 2);
+	glVertex3f(-xlen / 2, ylen, -zlen / 2);
 
 	glEnd();
-	
+
+	// Bottom
+	glBegin(GL_QUADS);
+
+	glVertex3f(xlen / 2, 0, -zlen / 2);
+	glVertex3f(xlen / 2, 0, zlen / 2);
+	glVertex3f(-xlen / 2, 0, zlen / 2);
+	glVertex3f(-xlen / 2, 0, -zlen / 2);
+
+	glEnd();
 }
 

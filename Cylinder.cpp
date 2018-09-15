@@ -12,68 +12,78 @@ using namespace std;
 
 #define PI 3.14159265358979323846
 
-cylinder::cylinder (double radius_, double d, double rotation_, double x, double y, double z,bool isRolling_,bool isSteering_,double R_,double G_,double B_) {
+cylinder::cylinder (double radius_, double d, bool roll, bool steer, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
 	radius = radius_;
 	depth = d;
-	isRolling = isRolling_;
-	isSteering = isSteering_;
+	isRolling = roll;
+	isSteering = steer;
+	setColor(red_, green_, blue_);
 	setRotation(rotation_);
-	setPosition(x, y+radius_, z-0.5*depth);
-
-	setColor(R_,G_,B_);
+	setPosition(x , y + radius , z);
 }
+
 
 void cylinder::draw() {
-	// draw the front face 
-	
-	setColorInGL();
+	// setting up position
 	positionInGL();
+	// rotate the frame of reference depend on rolling and steering
 	if (isSteering == true) {
-		glRotatef(-steering_in_cylinder_class, 0, 1, 0);//steering rotate along y
+		glRotatef(-steering_angle, 0, 1, 0);	//steering rotate along y
 	}
 	if (isRolling == true) {
-		glRotatef(-distance_in_cylinder_class / radius * 100, 0, 0, 1);//rolling rotate along x
+		glRotatef(-rolling_angle, 0, 0, 1);		//rolling rotate along x
 	}
-	glBegin(GL_TRIANGLE_FAN);
-	for (int i = 0; i <= 100; i++)
-		glVertex3f(radius * cosf(i * 2 * PI / 100), radius * sinf(i * 2 * PI / 100), 0);
-	glEnd();
-	glBegin(GL_QUADS);
-	for (double theta = 0.0; theta < 180; theta++)
-	{
-		if (theta == 90)
-		{
-			glColor3f(0, 0, 1);
-		}
-		double coor_X = cos(theta)*radius;
-		double coor_Y = sin(theta)*radius;
-		glVertex3f(coor_X, coor_Y, depth );
-		glVertex3f(coor_X, coor_Y, 0);
 
+	// Front face 
+	glBegin(GL_TRIANGLE_FAN);
+	for (int i = 0; i <= 50; i++) {
+		glColor3f(red, green, blue + 255);
+		glVertex3f(radius * cosf(i * 2 * PI / 100), radius * sinf(i * 2 * PI / 100) , -depth / 2);
 	}
 	glEnd();
-	// draw the back face
-	glBegin(GL_TRIANGLE_FAN);
-	for (int i = 0; i <= 100; i++)
-		glVertex3f(radius * cosf(i * 2 * PI / 100), radius * sinf(i * 2 * PI / 100), depth);
-	glEnd();
-	// draw the cylinder
-	gluCylinder(gluNewQuadric(), radius, radius, depth, 30, 10);
-	//glRotatef(-rotation, 0, 1, 0);//steering rotate along y
-	//glRotatef(-rollTheta, 0, 0, 1);//rolling rotate along x
-
 	
+	glBegin(GL_TRIANGLE_FAN);
+	for (int i = 50; i <= 100; i++) {
+		glColor3f(red, green, blue);
+		glVertex3f(radius * cosf(i * 2 * PI / 100), radius * sinf(i * 2 * PI / 100) , -depth / 2);
+	}
+	glEnd();
+	// Back face
+	glBegin(GL_TRIANGLE_FAN);
+	for (int i = 0; i <= 50; i++) {
+		glColor3f(red, green, blue + 255);
+		glVertex3f(radius * cosf(i * 2 * PI / 100), radius * sinf(i * 2 * PI / 100) , depth / 2);
+	}
+	glEnd();
+
+	glBegin(GL_TRIANGLE_FAN);
+	for (int i = 50; i <= 100; i++) {
+		glColor3f(red, green, blue);
+		glVertex3f(radius * cosf(i * 2 * PI / 100), radius * sinf(i * 2 * PI / 100) , depth / 2);
+	}
+	glEnd();
+	
+	setColorInGL();
+	// draw the cylinder
+	glPushMatrix();
+	glTranslated(0, 0, -depth / 2);
+	gluCylinder(gluNewQuadric(), radius, radius, depth, 30, 10);
+	glPopMatrix();
 }
 
-void cylinder::setsteering(double steering_) {
-	steering_in_cylinder_class = steering_;
-}
-void cylinder::setrolling_distance(double rolling_distance) {
-	distance_in_cylinder_class = rolling_distance;
-}
-double cylinder::getisRolling(){
+bool cylinder::getIsRolling() {
 	return isRolling;
 }
-double cylinder::getisSteering(){
+bool cylinder::getIsSteering() {
 	return isSteering;
 }
+
+void cylinder::setRollingAngle(double distance) {
+	rolling_angle = distance/radius*100;
+}
+void cylinder::setSteeringAngle(double angle) {
+	steering_angle = angle;
+}
+
+
+

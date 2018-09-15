@@ -84,6 +84,8 @@ void Shape::setPosition(double x_, double y_, double z_) {
 	z = z_;
 };
 
+
+
 void Shape::positionInGL() {
 	glTranslated(x, y, z);
 	glRotated(-rotation, 0, 1, 0);

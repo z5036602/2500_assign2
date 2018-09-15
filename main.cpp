@@ -1,3 +1,4 @@
+// code to improve upon
 
 #include <iostream>
 #include <cstdlib>
@@ -40,6 +41,9 @@
 #include "trapPrism.h"
 #include "cylinder.h"
 
+#include "XBoxController.h"
+#include "XInputWrapper.h"
+
 #include "RemoteDataManager.hpp"
 #include "Messages.hpp"
 #include "HUD.hpp"
@@ -57,6 +61,10 @@ void special_keyup(int keycode, int x, int y);
 void mouse(int button, int state, int x, int y);
 void dragged(int x, int y);
 void motion(int x, int y);
+
+void drawMyShape();
+
+#define PI 3.14159265358979323846
 
 using namespace std;
 using namespace scos;
@@ -159,17 +167,10 @@ void drawGoals()
 	}
 }
 
-//--------------------------------------
-// set up for shape (dimension, rotation, rgb, starting pts for drawing)
-void drawMyShape() {
-	
-	recPrism a(10, 10, 10, 45, 255, 255, 0, 0, 0, 0);
-	//triPrism a(60, 60, 60, 60, 30, 0, 255, 0, 0, 0, 0);
-	//trapPrism a(30, 5, 10, 10, 40, 0, 0, 0, 255, 0, 0, 0);
-	//cylinder a(10, 20, 0, 0, 255, 0, 0, 0, 0);
-	a.draw();
-}
-//--------------------------------------
+/*void drawMyShape() {
+	cylinder s = cylinder(5,10,true,true,0,255,0,0,0,0,0);
+	s.draw();
+}*/
 
 void display() {
 	frameCounter++;
@@ -201,11 +202,10 @@ void display() {
 	// draw my vehicle
 	if (vehicle != NULL) {
 		vehicle->draw();
-
 	}
-	glPopMatrix();
+
 	// draw obstacles
-	//ObstacleManager::get()->drawAll();
+	ObstacleManager::get()->drawAll();
 
 	// draw goals
 	drawGoals();
@@ -260,7 +260,43 @@ double getTime()
 }
 
 void idle() {
+	
+	// XBoxController for Camera
+	
+	XInputWrapper xinput;
+	GamePad::XBoxController controller1(&xinput, 0);
 
+	bool quit = false;
+	bool vibrate = false;
+
+	controller1.IsConnected();
+	// controll camera by D-pad
+	// Left strafe - left dpad
+	if (controller1.PressedLeftDpad()) {
+		Camera::get()->strafeLeft();
+	}
+	// Right strafe - right dpad
+	if (controller1.PressedRightDpad()) {
+		Camera::get()->strafeRight();
+	}
+	// Foward strafe - up dpad
+	if (controller1.PressedUpDpad()) {
+		Camera::get()->moveForward();
+	}
+	// Backward strafe - down dpad
+	if (controller1.PressedDownDpad()) {
+		Camera::get()->moveBackward();
+	}
+	// Up strafe using the Right shoulder
+	if (controller1.PressedRightShoulder()) {
+		Camera::get()->strafeUp();
+	}
+	// Down strafe using the Left shoulder
+	if (controller1.PressedLeftShoulder()) {
+		Camera::get()->strafeDown();
+	}
+	
+	// Code for controller Camera using the keyboard
 	if (KeyManager::get()->isAsciiKeyPressed('a')) {
 		Camera::get()->strafeLeft();
 	}
@@ -288,6 +324,24 @@ void idle() {
 	speed = 0;
 	steering = 0;
 
+	// XboxController for Vehicle code
+	// Using the right trigger for speed increase
+	if (controller1.RightTriggerLocation() != 0) {
+		speed = Vehicle::MAX_FORWARD_SPEED_MPS;
+	}
+	// Left trigger for reverse
+	if (controller1.LeftTriggerLocation() != 0) {
+		speed = Vehicle::MAX_BACKWARD_SPEED_MPS;
+	}
+	// Use left thumb location for steering
+	if (controller1.LeftThumbLocation().GetX() < 0) {
+		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;
+	}
+	if (controller1.LeftThumbLocation().GetX() > 0) {
+		steering = Vehicle::MAX_RIGHT_STEERING_DEGS * -1;
+	}
+	
+	// Cotrolling Vehicle using the keyboard
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
 		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;   
 	}
@@ -303,7 +357,7 @@ void idle() {
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_DOWN)) {
 		speed = Vehicle::MAX_BACKWARD_SPEED_MPS;
 	}
-
+	
 	// attempt to do data communications every 4 frames if we've created a local vehicle
 	if(frameCounter % 4 == 0 && vehicle != NULL) {
 
@@ -317,8 +371,8 @@ void idle() {
 				}
 				otherVehicles.clear();
 
-				// uncomment this line to connect to the robotics server.*****************************************************
-				RemoteDataManager::Connect("www.robotics.unsw.edu.au","18081");
+				// uncomment this line to connect to the robotics server.
+				//RemoteDataManager::Connect("www.robotics.unsw.edu.au","18081");
 
 				// on connect, let's tell the server what we look like
 				if (RemoteDataManager::IsConnected()) {
@@ -327,108 +381,10 @@ void idle() {
 					VehicleModel vm;
 					vm.remoteID = 0;
 
-					ShapeInit part;
-					vm.remoteID = 0;
-					part.type = RECTANGULAR_PRISM;
-					part.params.rect.xlen = 10;
-					part.params.rect.ylen = 4;
-					part.params.rect.zlen = 8;
-					part.rgb[0] = 0.0;
-					part.rgb[1] = 255;
-					part.rgb[2] = 0.0;
-					part.rotation = 0.0;
-					part.xyz[0] = 0.0;
-					part.xyz[1] = 2;
-					part.xyz[2] = 0;
-					vm.shapes.push_back(part);
-
-					part.type = TRAPEZOIDAL_PRISM;
-					part.params.trap.alen = 10;
-					part.params.trap.blen = 8;
-					part.params.trap.height = 2;
-					part.params.trap.aoff = 1;
-					part.params.trap.depth = 8;
-					part.rgb[0] = 0.7;
-					part.rgb[1] = 0.0;
-					part.rgb[2] = 0.0;
-					part.rotation = 0.0;
-					part.xyz[0] = 0;
-					part.xyz[1] = 6;
-					part.xyz[2] = 0;
-					vm.shapes.push_back(part);
-
-					part.type = TRIANGULAR_PRISM;
-					part.params.tri.alen = 8;
-					part.params.tri.blen = 4.0;
-					part.params.tri.angle = 45.0;
-					part.params.tri.depth = 8.0;
-					part.rgb[0] = 0.0;
-					part.rgb[1] = 0.0;
-					part.rgb[2] = 0.0;
-					part.rotation = 0.0;
-					part.xyz[0] = 1.0;
-					part.xyz[1] = 8.0;
-					part.xyz[2] = 0.0;
-					vm.shapes.push_back(part);
-
-					part.type = CYLINDER;
-					part.params.cyl.radius = 0.21;
-					part.params.cyl.depth = 0.19;
-					part.params.cyl.isRolling = 1;
-					part.params.cyl.isSteering = 1;
-					part.rgb[0] = 0.2;
-					part.rgb[1] = 0.2;
-					part.rgb[2] = 0.2;
-					part.rotation = 0.0;
-					part.xyz[0] = 1.28;
-					part.xyz[1] = 0.0;
-					part.xyz[2] = 0.61;
-					vm.shapes.push_back(part);
-
-					part.type = CYLINDER;
-					part.params.cyl.radius = 2;
-					part.params.cyl.depth = 1;
-					part.params.cyl.isRolling = 1;
-					part.params.cyl.isSteering = 1;
-					part.rgb[0] = 0.2;
-					part.rgb[1] = 0.2;
-					part.rgb[2] = 0.2;
-					part.rotation = 0.0;
-					part.xyz[0] = 1.28;
-					part.xyz[1] = 0.0;
-					part.xyz[2] = -0.61;
-					vm.shapes.push_back(part);
-
-					part.type = CYLINDER;
-					part.params.cyl.radius = 0.21;
-					part.params.cyl.depth = 0.19;
-					part.params.cyl.isRolling = 1;
-					part.params.cyl.isSteering = 0;
-					part.rgb[0] = 0.2;
-					part.rgb[1] = 0.2;
-					part.rgb[2] = 0.2;
-					part.rotation = 0.0;
-					part.xyz[0] = -1.04;
-					part.xyz[1] = 0.0;
-					part.xyz[2] = 0.61;
-					vm.shapes.push_back(part);
-
-					part.type = CYLINDER;
-					part.params.cyl.radius = 0.21;
-					part.params.cyl.depth = 0.19;
-					part.params.cyl.isRolling = 1;
-					part.params.cyl.isSteering = 0;
-					part.rgb[0] = 0.2;
-					part.rgb[1] = 0.2;
-					part.rgb[2] = 0.2;
-					part.rotation = 0.0;
-					part.xyz[0] = -1.04;
-					part.xyz[1] = 0.0;
-					part.xyz[2] = -0.61;
-					vm.shapes.push_back(part);
-
-
-
+					//
+					// student code goes here
+					// converting myVehicle into message to write to the server
+					// converting all shape into parameter suitable for server to write
 
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
 				}
@@ -463,11 +419,14 @@ void idle() {
 							for(unsigned int i = 0; i < models.size(); i++) {
 								VehicleModel vm = models[i];
 								
-								// uncomment the line below to create remote vehicles*****************************************************
-								otherVehicles[vm.remoteID] = new myVehicle(vm); // construct a vehicle by input from the server???
-								//vm
+								// uncomment the line below to create remote vehicles
+								// using another constructor to create a new vehicle
+								// based on the message received from the server
+								// if default constructor just create our own vehicle
+								otherVehicles[vm.remoteID] = new myVehicle();
 
-								
+								// more student code goes here
+								//
 							}
 							break;
 						}
@@ -542,6 +501,7 @@ void idle() {
 	previousTime = currTime;
 
 	// do a simulation step
+	// update the state of the vehicle speed and steering and position
 	if (vehicle != NULL) {
 		vehicle->update(speed, steering, elapsedTime);
 	}
@@ -564,7 +524,7 @@ void keydown(unsigned char key, int x, int y) {
 	//   in the idle function
 	KeyManager::get()->asciiKeyPressed(key);
 
-	// keys that react ocne when pressed rather than need to be held down
+	// keys that react once when pressed rather than need to be held down
 	//   can be handles normally, like this...
 	switch (key) {
 	case 27: // ESC key

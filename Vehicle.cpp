@@ -44,6 +44,7 @@ void Vehicle::update(double speed_, double steering_, double dt)
 	update(dt);
 }
 
+// push more shape into the vector containing all the shapes
 void Vehicle::addShape(Shape * shape) 
 {
 	shapes.push_back(shape);

@@ -17,6 +17,8 @@ public:
 	virtual void update(double dt);
 	virtual void update(double speed_, double steering_, double dt);
 
+	// abstrac class/ cant use draw function 
+	// need own draw function in derived myVehicle class
 	virtual void draw() = 0;
 
 	static const int MAX_FORWARD_SPEED_MPS = 10;
@@ -28,11 +30,13 @@ public:
 	double getSpeed() const { return speed; }
 	double getSteering() const { return steering; }
 
+	// function to add more shapes to the vector shape to make own vehicle
 	void addShape(Shape * shape);
 protected:
 	double speed;     // m/s
 	double steering;  // degrees
 
+	// vector contain series of shapes to make own vehicle
 	std::vector<Shape *> shapes;
 };
 

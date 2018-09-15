@@ -4,23 +4,36 @@
 #define cylinder_hpp
 #include "Shape.hpp"
 
+#include "Messages.hpp"
+
 class cylinder : public Shape {
+	// private member data
+	// storing radius and depth
 	double radius;
 	double depth;
-	bool isRolling = true;	// needs to roll with vehicle?
-	bool isSteering = true;// needs to steer with vehicle?
-	double steering_in_cylinder_class;
-	double distance_in_cylinder_class;
 
+	// storing if rolling or steering
+	// differentiate between front and rear wheel
+	bool isRolling;
+	bool isSteering;
+
+	// storing value for steering and rolling
+	double steering_angle;
+	double rolling_angle;
+
+	// public memeber methods
 public:
-	cylinder(double radius, double depth, double rotation_, double x, double y, double z,bool isRolling_, bool isSteering_, double R_, double G_, double B_);
+	cylinder(double radius, double depth, bool roll, bool steer, double rotation_, float red_, float green_, float blue_, double x, double y, double z);
 	cylinder() {}
 	void virtual draw();
-	void setsteering(double steering_);
-	void setrolling_distance(double rolling_distance);
-	//double ThetaRolling(double speed, double time);
-	double getisRolling();
-	double getisSteering();
+
+	// method for setting the rolling speed/ steering angle
+	bool getIsRolling();
+	bool getIsSteering();
+
+	void setRollingAngle(double distance);
+	void setSteeringAngle(double angle);
+
 };
 
 #endif

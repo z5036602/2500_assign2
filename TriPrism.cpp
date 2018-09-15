@@ -10,62 +10,58 @@
 
 using namespace std;
 
-triPrism::triPrism(double l1_, double l2_, double theta_, double d, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
-	l1 = l1_;
-	l2 = l2_;
-	theta = theta_;
+#define PI 3.14159265358979323846
+
+triPrism::triPrism(double a, double b, double angle_, double d, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
+	alen = a;
+	blen = b;
+	angle = angle_;
 	depth = d;
 	setColor(red_, green_, blue_);
-	//setRotation(rotation_);
-	setPosition(x, y, z);
 	setRotation(rotation_);
+	setPosition(x,  y, z);
 }
 
 void triPrism::draw() {
-	// draw front face
+	// setting up position and color in GL
 	setColorInGL();
 	positionInGL();
-	//glRotated(50, 0, 1, 0);
+
+	// Front face
 	glBegin(GL_TRIANGLES);
 
-	glVertex3f(-l1/2, 0, -depth/2); 
-	glVertex3f(l1 / 2, 0, -depth / 2);
-	glVertex3f(l2 *cos(theta/180*3.1415) - l1 / 2, l2 * sin(theta /180*3.1415), -depth / 2);
+	glVertex3f(-alen / 2, 0, -depth / 2); 
+	glVertex3f(alen / 2, 0, -depth / 2);
+	glVertex3f(-alen / 2 + blen *cos(angle/180 * PI), blen * sin(angle/180 * PI), -depth / 2);
 	
 	glEnd();
-	// draw back face
+
+	// Back Face
 	glBegin(GL_TRIANGLES);
 
-	glVertex3f(-l1 / 2, 0, depth / 2);
-	glVertex3f(l1 / 2, 0, depth / 2);
-	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), depth / 2);
+	glVertex3f(-alen / 2, 0, depth / 2);
+	glVertex3f(alen / 2, 0, depth / 2);
+	glVertex3f(-alen / 2 + blen * cos(angle / 180 * PI), blen * sin(angle / 180 * PI), depth / 2);
 
 	glEnd();
-	// draw right face
+
+	// Right face
 	glBegin(GL_QUADS);
 
-	glVertex3f(-l1 / 2, 0, -depth / 2);
-	glVertex3f(-l1 / 2, 0, depth / 2);
-	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), depth / 2);
-	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), -depth / 2);
+	glVertex3f(-alen / 2, 0, -depth / 2);
+	glVertex3f(-alen / 2, 0, depth / 2);
+	glVertex3f(-alen / 2 + blen * cos(angle / 180 * PI), blen * sin(angle / 180 * PI), depth / 2);
+	glVertex3f(-alen / 2 + blen * cos(angle / 180 * PI), blen * sin(angle / 180 * PI), -depth /2 );
 
 	glEnd();
-	// draw left face
+
+	// Left face
 	glBegin(GL_QUADS);
 
-	glVertex3f(l1 / 2, 0, -depth / 2);
-	glVertex3f(l1 / 2, 0, depth / 2);
-	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), -depth / 2);
-	glVertex3f(l2 *cos(theta / 180 * 3.1415) - l1 / 2, l2 * sin(theta / 180 * 3.1415), depth / 2);
-
-	glEnd();
-	// draw bottom
-	glBegin(GL_QUADS);
-
-	glVertex3f(-l1 / 2, 0, -depth / 2);
-	glVertex3f(-l1 / 2, 0, +depth / 2);
-	glVertex3f(+l1 / 2, 0, +depth / 2);
-	glVertex3f(+l1 / 2, 0, -depth / 2);
+	glVertex3f(alen / 2, 0, -depth / 2);
+	glVertex3f(alen / 2, 0, depth / 2);
+	glVertex3f(-alen / 2 + blen * cos(angle / 180 * PI), blen * sin(angle / 180 * PI), depth / 2);
+	glVertex3f(-alen / 2 + blen * cos(angle / 180 * PI), blen * sin(angle / 180 * PI), -depth / 2);
 
 	glEnd();
 }

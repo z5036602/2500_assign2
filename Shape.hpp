@@ -2,6 +2,9 @@
 #ifndef MTRN3500_SHAPE_H
 #define MTRN3500_SHAPE_H
 
+
+
+
 // Abstract class
 class Shape {
 
@@ -21,8 +24,10 @@ public:
 	void setX(double x_);
 	void setY(double y_);
 	void setZ(double z_);
+	// setting rotation of the shape with respect to x plane
 	void setRotation(double rotation_);
 
+	// set position of the centroid of the shape
 	void setPosition(double x_, double y_, double z_);
 
 	void positionInGL();
@@ -34,7 +39,7 @@ public:
 	void setColor(float red_, float green_, float blue_);
 
 protected:
-	double x, y, z;               // position
+	double x, y, z;               // position of the
 	double rotation;              // heading of the object in the horizontal plane (degrees)
 	float red, green, blue;       // colour of object
 

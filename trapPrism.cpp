@@ -10,11 +10,11 @@
 
 using namespace std;
 
-trapPrism::trapPrism(double base_, double top_, double os1_, double height_, double d, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
-	base = base_;
-	top = top_;
-	os1 = os1_;
-	height = height_;
+trapPrism::trapPrism(double base, double top, double off, double h, double d, double rotation_, float red_, float green_, float blue_, double x, double y, double z) {
+	alen = base;
+	blen = top;
+	aoff = off;
+	height = h;
 	depth = d;
 	setColor(red_, green_, blue_);
 	setRotation(rotation_);
@@ -22,66 +22,66 @@ trapPrism::trapPrism(double base_, double top_, double os1_, double height_, dou
 }
 
 void trapPrism::draw() {
-	// draw front face
+	// setting up position and color in GL
 	setColorInGL();
 	positionInGL();
+
+	// Front face
 	glBegin(GL_QUADS);
-	double os2 = base - top - os1;
-	glVertex3f(-0.5*base, 0, -depth*0.5); //a
-	glVertex3f(-0.5*base+os1, height, -depth * 0.5);//d
-	glVertex3f(0.5*base - os2, height, -depth * 0.5);//c
-	glVertex3f(0.5*base, 0, -depth * 0.5);//b
+
+	glVertex3f(-alen / 2, 0, -depth / 2);
+	glVertex3f(alen / 2, 0, -depth / 2);
+	glVertex3f(-alen / 2 + aoff + blen, height, -depth / 2);
+	glVertex3f(-alen / 2 + aoff, height, -depth / 2);
 
 	glEnd();
 
-	// draw the back face
+	// Back face
 	glBegin(GL_QUADS);
 
-	glVertex3f(-0.5*base, 0, depth * 0.5); //e
-	glVertex3f(-0.5*base + os1, height, +depth * 0.5);//h
-	glVertex3f(0.5*base - os2, height, +depth * 0.5);//g
-	glVertex3f(0.5*base, 0, +depth * 0.5);//f
-
-	glEnd();
-	
-	// draw the right face
-	glBegin(GL_QUADS);
-
-	glVertex3f(0.5*base, 0, -depth * 0.5);
-	glVertex3f(0.5*base - os2, height, -depth * 0.5);
-	glVertex3f(0.5*base - os2, height, +depth * 0.5);
-	glVertex3f(0.5*base, 0, +depth * 0.5);
+	glVertex3f(-alen / 2, 0, depth / 2);
+	glVertex3f(alen / 2, 0, depth / 2);
+	glVertex3f(-alen / 2 + aoff + blen, height, depth / 2);
+	glVertex3f(-alen / 2 + aoff, height, depth / 2);
 
 	glEnd();
 
-	// draw the left face
+	// Right Face
 	glBegin(GL_QUADS);
 
-	glVertex3f(-0.5*base, 0, -depth * 0.5);
-	glVertex3f(-0.5*base + os1, height, -depth * 0.5);
-	glVertex3f(-0.5*base + os1, height, +depth * 0.5);
-	glVertex3f(-0.5*base, 0, depth * 0.5);
+	glVertex3f(-alen / 2, 0, -depth / 2);
+	glVertex3f(-alen / 2, 0, depth / 2);
+	glVertex3f(-alen / 2 + aoff , height, depth / 2);
+	glVertex3f(-alen / 2 + aoff , height, -depth / 2);
 
 	glEnd();
 
-	// draw top
+	// Left Face
 	glBegin(GL_QUADS);
 
-	glVertex3f(-0.5*base + os1, height, -depth * 0.5);
-	glVertex3f(0.5*base - os2, height, -depth * 0.5);
-	glVertex3f(0.5*base - os2, height, +depth * 0.5);
-	glVertex3f(-0.5*base + os1, height, +depth * 0.5);
+	glVertex3f(alen / 2, 0, -depth / 2);
+	glVertex3f(alen / 2, 0, depth / 2);
+	glVertex3f(-alen / 2 + aoff + blen, height, depth / 2);
+	glVertex3f(-alen / 2 + aoff + blen, height, -depth / 2);
 
 	glEnd();
 
-	//draw bottom
+	// Top
 	glBegin(GL_QUADS);
 
-	glVertex3f(-0.5*base, 0, -depth * 0.5);
-	glVertex3f(0.5*base, 0, -depth * 0.5);
-	glVertex3f(0.5*base, 0, +depth * 0.5);
-	glVertex3f(-0.5*base, 0, depth * 0.5);
+	glVertex3f(-alen / 2 + aoff, height, -depth / 2);
+	glVertex3f(-alen / 2 + aoff, height, depth / 2);
+	glVertex3f(-alen / 2 + aoff + blen, height, depth / 2);
+	glVertex3f(-alen / 2 + aoff + blen, height, -depth / 2);
 
 	glEnd();
+	// Bottom
+	glBegin(GL_QUADS);
+
+	glVertex3f(-alen / 2, 0, -depth / 2);
+	glVertex3f(-alen / 2, 0, depth / 2);
+	glVertex3f(alen / 2, 0, depth / 2);
+	glVertex3f(alen / 2, 0, -depth / 2);
+
+	glEnd();	
 }
-
