@@ -18,6 +18,10 @@ public:
 	~recPrism() {}
 	void virtual draw();
 
+	double getXlen() {return xlen;}
+	double getYlen() {return ylen;}
+	double getZlen() {return zlen;}
+
 };
 
 #endif

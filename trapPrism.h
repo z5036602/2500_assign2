@@ -21,6 +21,11 @@ public:
 	~trapPrism() {}
 	void virtual draw();
 
+	double getAlen() { return alen; }
+	double getBlen() { return blen; }
+	double getAoff() { return aoff; }
+	double getHeight() { return height; }
+	double getDepth() { return depth; }
 };
 
 #endif

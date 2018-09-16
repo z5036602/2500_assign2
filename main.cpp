@@ -62,7 +62,6 @@ void mouse(int button, int state, int x, int y);
 void dragged(int x, int y);
 void motion(int x, int y);
 
-void drawMyShape();
 
 #define PI 3.14159265358979323846
 
@@ -201,7 +200,7 @@ void display() {
 
 	// draw my vehicle
 	if (vehicle != NULL) {
-		vehicle->draw();
+		//vehicle->draw();
 	}
 
 	// draw obstacles
@@ -372,20 +371,24 @@ void idle() {
 				otherVehicles.clear();
 
 				// uncomment this line to connect to the robotics server.
-				//RemoteDataManager::Connect("www.robotics.unsw.edu.au","18081");
+				RemoteDataManager::Connect("www.robotics.unsw.edu.au","18081");
 
 				// on connect, let's tell the server what we look like
+				// converting the local vehicle to message to report online
 				if (RemoteDataManager::IsConnected()) {
 					ObstacleManager::get()->removeAll();
 
 					VehicleModel vm;
 					vm.remoteID = 0;
 
-					//
 					// student code goes here
 					// converting myVehicle into message to write to the server
 					// converting all shape into parameter suitable for server to write
+					myVehicle *myV = dynamic_cast<myVehicle*>(vehicle);
+					vm = myV->convert();
+					vm.remoteID = 0;
 
+					// reporting the message for local vehicle online
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
 				}
 			}
@@ -423,7 +426,7 @@ void idle() {
 								// using another constructor to create a new vehicle
 								// based on the message received from the server
 								// if default constructor just create our own vehicle
-								otherVehicles[vm.remoteID] = new myVehicle();
+								otherVehicles[vm.remoteID] = new myVehicle(vm);
 
 								// more student code goes here
 								//

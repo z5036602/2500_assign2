@@ -85,5 +85,10 @@ void cylinder::setSteeringAngle(double angle) {
 	steering_angle = angle;
 }
 
-
+double cylinder::getRadius() {
+	return radius;
+}
+double cylinder::getDepth() {
+	return depth;
+}
 

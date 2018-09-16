@@ -17,6 +17,11 @@ public:
 	~triPrism() {}
 	void virtual draw();
 
+
+	double getAlen() { return alen; }
+	double getBlen() { return blen; }
+	double getAngle() { return angle; }
+	double getDepth() { return depth; }
 };
 
 #endif
