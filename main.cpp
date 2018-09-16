@@ -200,7 +200,7 @@ void display() {
 
 	// draw my vehicle
 	if (vehicle != NULL) {
-		//vehicle->draw();
+		vehicle->draw();
 	}
 
 	// draw obstacles
@@ -383,10 +383,27 @@ void idle() {
 
 					// student code goes here
 					// converting myVehicle into message to write to the server
-					// converting all shape into parameter suitable for server to write
+					// converting all shapes into VehicleModel vm
 					myVehicle *myV = dynamic_cast<myVehicle*>(vehicle);
 					vm = myV->convert();
 					vm.remoteID = 0;
+
+					for (std::vector<ShapeInit>::iterator iter = vm.shapes.begin(); iter != vm.shapes.end(); ++iter) {
+						switch (iter->type) {
+						case CYLINDER:
+							std::cout << int(iter->params.cyl.radius) << std::endl;
+							break;
+						case RECTANGULAR_PRISM:
+							std::cout << int(iter->params.rect.xlen) << std::endl;
+							break;
+						case TRIANGULAR_PRISM:
+							std::cout << int(iter->params.tri.alen) << std::endl;
+							break;
+						case TRAPEZOIDAL_PRISM:
+							std::cout << int(iter->params.trap.alen) << std::endl;
+							break;
+						}
+					}
 
 					// reporting the message for local vehicle online
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
@@ -422,10 +439,8 @@ void idle() {
 							for(unsigned int i = 0; i < models.size(); i++) {
 								VehicleModel vm = models[i];
 								
-								// uncomment the line below to create remote vehicles
 								// using another constructor to create a new vehicle
 								// based on the message received from the server
-								// if default constructor just create our own vehicle
 								otherVehicles[vm.remoteID] = new myVehicle(vm);
 
 								// more student code goes here

@@ -52,6 +52,7 @@ VehicleModel myVehicle::convert() {
 	VehicleModel vm;
 	ShapeInit part;
 	for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
+		
 		if (dynamic_cast<cylinder*>(*it) != NULL){
 			cylinder *CylObj = dynamic_cast<cylinder*>(*it);
 			part.type = CYLINDER;
@@ -60,6 +61,7 @@ VehicleModel myVehicle::convert() {
 			part.params.cyl.isRolling = CylObj->getIsRolling();
 			part.params.cyl.isSteering = CylObj->getIsSteering();
 		}
+
 		else if (dynamic_cast<recPrism*>(*it) != NULL) {
 			recPrism *RecObj = dynamic_cast<recPrism*>(*it);
 			part.type = RECTANGULAR_PRISM;
@@ -67,6 +69,7 @@ VehicleModel myVehicle::convert() {
 			part.params.rect.ylen = RecObj->getYlen();
 			part.params.rect.zlen = RecObj->getZlen();
 		}
+
 		else if (dynamic_cast<triPrism*>(*it) != NULL) {
 			triPrism *TriObj = dynamic_cast<triPrism*>(*it);
 			part.type = TRIANGULAR_PRISM;
@@ -85,13 +88,14 @@ VehicleModel myVehicle::convert() {
 			part.params.trap.height = TrapObj->getHeight();
 			part.params.trap.depth = TrapObj->getDepth();
 		}
+
 		part.rgb[0] = (*it)->getRed();
 		part.rgb[1] = (*it)->getGreen();
 		part.rgb[2] = (*it)->getBlue();
-		part.rotation = (*it)->getRotation();
 		part.xyz[0] = (*it)->getX();
 		part.xyz[1] = (*it)->getY();
 		part.xyz[2] = (*it)->getZ();
+		part.rotation = (*it)->getRotation();
 		vm.shapes.push_back(part);
 	}
 	return vm;
