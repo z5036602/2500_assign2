@@ -71,12 +71,6 @@ void cylinder::draw() {
 	glPopMatrix();
 }
 
-bool cylinder::getIsRolling() {
-	return isRolling;
-}
-bool cylinder::getIsSteering() {
-	return isSteering;
-}
 
 void cylinder::setRollingAngle(double distance) {
 	rolling_angle = distance/radius*100;
@@ -85,10 +79,4 @@ void cylinder::setSteeringAngle(double angle) {
 	steering_angle = angle;
 }
 
-double cylinder::getRadius() {
-	return radius;
-}
-double cylinder::getDepth() {
-	return depth;
-}
 

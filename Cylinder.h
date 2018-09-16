@@ -27,11 +27,11 @@ public:
 	cylinder() {}
 	void virtual draw();
 
-	double getRadius();
-	double getDepth();
+	double getRadius() { return radius; }
+	double getDepth() { return depth; }
 	// method for setting the rolling speed/ steering angle
-	bool getIsRolling();
-	bool getIsSteering();
+	bool getIsRolling() { return isRolling; }
+	bool getIsSteering() { return isSteering; }
 
 	void setRollingAngle(double distance);
 	void setSteeringAngle(double angle);

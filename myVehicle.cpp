@@ -21,39 +21,56 @@
 
 // Constructor of local vehicle
 myVehicle::myVehicle() {
+	ShapeInit part;
 	// Constructing a vector of shape of own design
 	Shape *shapePtr = NULL;
+	
 	// Body of the car
 	shapePtr = new recPrism(10, 2, 5, 0, 0, 255, 0, 0, 1, 0);
 	addShape(shapePtr);
 	// Top of the car
 	shapePtr = new trapPrism(8, 6, 1, 2, 5, 0, 125, 0, 125, -1, 3, 0);
 	addShape(shapePtr);
+
 	// Tail of the car
 	shapePtr = new triPrism(3, 1, 45, 8, 180, 255, 0, 0, -4, 5, 0);
 	addShape(shapePtr);
+
 	// Bumper
 	shapePtr = new triPrism(3, 2, 90, 5, 0, 255, 0, 0, 6.5, 1, 0);
 	addShape(shapePtr);
+	
 	// Front wheel (sterring and rolling)
 	shapePtr = new cylinder(1, 0.5, true, true, 0, 255, 125, 0, 5, 0, -2.75);
 	addShape(shapePtr);
 	shapePtr = new cylinder(1, 0.5, true, true, 0, 255, 125, 0, 5, 0, 2.75);
 	addShape(shapePtr);
+
 	// Rear wheel (rolling)
 	shapePtr = new cylinder(1.5, 0.75, true, false, 0, 255, 125, 0, -4, 0, -2.75);
 	addShape(shapePtr);
 	shapePtr = new cylinder(1.5, 0.75, true, false, 0, 255, 125, 0, -4, 0, 2.75);
 	addShape(shapePtr);
+	
 }
 
 // Constructor of server vehicle with input of VehicleModel
-VehicleModel myVehicle::convert() {
-	VehicleModel vm;
+void myVehicle::convert() {
+	// Create a new ShapeInitpart to be push into the vector shapes
 	ShapeInit part;
 	for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
 		
-		if (dynamic_cast<cylinder*>(*it) != NULL){
+		// Write out information about the location, rotation and color of the shape
+		part.rgb[0] = (*it)->getRed();
+		part.rgb[1] = (*it)->getGreen();
+		part.rgb[2] = (*it)->getBlue();
+		part.xyz[0] = (*it)->getX();
+		part.xyz[1] = (*it)->getY();
+		part.xyz[2] = (*it)->getZ();
+		part.rotation = (*it)->getRotation();
+
+		// if the shape is Cylinder update parameter of cylinder
+		if (dynamic_cast<cylinder*>(*it) != NULL) {
 			cylinder *CylObj = dynamic_cast<cylinder*>(*it);
 			part.type = CYLINDER;
 			part.params.cyl.radius = CylObj->getRadius();
@@ -61,8 +78,9 @@ VehicleModel myVehicle::convert() {
 			part.params.cyl.isRolling = CylObj->getIsRolling();
 			part.params.cyl.isSteering = CylObj->getIsSteering();
 		}
-
-		else if (dynamic_cast<recPrism*>(*it) != NULL) {
+		
+		// if the shape is recPrism update paramater of rectPrism
+		if (dynamic_cast<recPrism*>(*it) != NULL) {
 			recPrism *RecObj = dynamic_cast<recPrism*>(*it);
 			part.type = RECTANGULAR_PRISM;
 			part.params.rect.xlen = RecObj->getXlen();
@@ -70,7 +88,8 @@ VehicleModel myVehicle::convert() {
 			part.params.rect.zlen = RecObj->getZlen();
 		}
 
-		else if (dynamic_cast<triPrism*>(*it) != NULL) {
+		// if the shape is TriPrism update parameters related to triPrism
+		if (dynamic_cast<triPrism*>(*it) != NULL) {
 			triPrism *TriObj = dynamic_cast<triPrism*>(*it);
 			part.type = TRIANGULAR_PRISM;
 			part.params.tri.alen = TriObj->getAlen();
@@ -79,7 +98,8 @@ VehicleModel myVehicle::convert() {
 			part.params.tri.depth = TriObj->getDepth();
 		}
 
-		else if (dynamic_cast<trapPrism*>(*it) != NULL) {
+		// if the shape is trapPrism update parameter related to trapPrism
+		if (dynamic_cast<trapPrism*>(*it) != NULL) {
 			trapPrism *TrapObj = dynamic_cast<trapPrism*>(*it);
 			part.type = TRAPEZOIDAL_PRISM;
 			part.params.trap.alen = TrapObj->getAlen();
@@ -89,16 +109,9 @@ VehicleModel myVehicle::convert() {
 			part.params.trap.depth = TrapObj->getDepth();
 		}
 
-		part.rgb[0] = (*it)->getRed();
-		part.rgb[1] = (*it)->getGreen();
-		part.rgb[2] = (*it)->getBlue();
-		part.xyz[0] = (*it)->getX();
-		part.xyz[1] = (*it)->getY();
-		part.xyz[2] = (*it)->getZ();
-		part.rotation = (*it)->getRotation();
-		vm.shapes.push_back(part);
+		// Push the part onto the vector of vehicleModel
+		myVehicleModel.shapes.push_back(part);
 	}
-	return vm;
 }
 
 // Converting the designed vehicle to the M message to send to the server

@@ -376,7 +376,7 @@ void idle() {
 				// on connect, let's tell the server what we look like
 				// converting the local vehicle to message to report online
 				if (RemoteDataManager::IsConnected()) {
-					ObstacleManager::get()->removeAll();
+					//ObstacleManager::get()->removeAll();
 
 					VehicleModel vm;
 					vm.remoteID = 0;
@@ -384,27 +384,8 @@ void idle() {
 					// student code goes here
 					// converting myVehicle into message to write to the server
 					// converting all shapes into VehicleModel vm
-					myVehicle *myV = dynamic_cast<myVehicle*>(vehicle);
-					vm = myV->convert();
-					vm.remoteID = 0;
-
-					for (std::vector<ShapeInit>::iterator iter = vm.shapes.begin(); iter != vm.shapes.end(); ++iter) {
-						switch (iter->type) {
-						case CYLINDER:
-							std::cout << int(iter->params.cyl.radius) << std::endl;
-							break;
-						case RECTANGULAR_PRISM:
-							std::cout << int(iter->params.rect.xlen) << std::endl;
-							break;
-						case TRIANGULAR_PRISM:
-							std::cout << int(iter->params.tri.alen) << std::endl;
-							break;
-						case TRAPEZOIDAL_PRISM:
-							std::cout << int(iter->params.trap.alen) << std::endl;
-							break;
-						}
-					}
-
+					vm = dynamic_cast<myVehicle*>(vehicle)->getMyVehicleModel();
+					
 					// reporting the message for local vehicle online
 					RemoteDataManager::Write(GetVehicleModelStr(vm));
 				}
@@ -442,9 +423,6 @@ void idle() {
 								// using another constructor to create a new vehicle
 								// based on the message received from the server
 								otherVehicles[vm.remoteID] = new myVehicle(vm);
-
-								// more student code goes here
-								//
 							}
 							break;
 						}
