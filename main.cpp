@@ -384,7 +384,7 @@ void idle() {
 					// student code goes here
 					// converting myVehicle into message to write to the server
 					// converting all shapes into VehicleModel vm
-					vm = dynamic_cast<myVehicle*>(vehicle)->getMyVehicleModel();
+					vm = dynamic_cast<myVehicle*>(vehicle)->convert();
 					
 					// reporting the message for local vehicle online
 					RemoteDataManager::Write(GetVehicleModelStr(vm));

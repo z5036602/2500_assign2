@@ -21,7 +21,6 @@
 
 // Constructor of local vehicle
 myVehicle::myVehicle() {
-	ShapeInit part;
 	// Constructing a vector of shape of own design
 	Shape *shapePtr = NULL;
 	
@@ -55,7 +54,8 @@ myVehicle::myVehicle() {
 }
 
 // Constructor of server vehicle with input of VehicleModel
-void myVehicle::convert() {
+VehicleModel myVehicle::convert() {
+	VehicleModel vm;
 	// Create a new ShapeInitpart to be push into the vector shapes
 	ShapeInit part;
 	for (std::vector<Shape *>::iterator it = shapes.begin(); it != shapes.end(); it++) {
@@ -110,8 +110,9 @@ void myVehicle::convert() {
 		}
 
 		// Push the part onto the vector of vehicleModel
-		myVehicleModel.shapes.push_back(part);
+		vm.shapes.push_back(part);
 	}
+	return vm;
 }
 
 // Converting the designed vehicle to the M message to send to the server
